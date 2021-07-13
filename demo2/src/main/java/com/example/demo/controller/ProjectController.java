@@ -168,6 +168,10 @@ public class ProjectController {
         /*project_resourceService.deleteResourcesFromProject(resources, project);*/
         return new ResponseEntity<>("Resources is deleted", HttpStatus.OK);
     }
+
+
+
+
 }
 
 

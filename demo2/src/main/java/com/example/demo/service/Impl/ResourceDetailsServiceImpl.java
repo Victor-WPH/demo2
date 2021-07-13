@@ -36,3 +36,7 @@ public class ResourceDetailsServiceImpl extends Throwable implements ResourceDet
     }
 }
 
+    /*@Override
+    public Resource_Details get()
+}
+*/

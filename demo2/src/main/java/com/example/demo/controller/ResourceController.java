@@ -1,5 +1,8 @@
 package com.example.demo.controller;
+import com.example.demo.entity.Project_columns;
+import com.example.demo.entity.Resource_Details;
 import com.example.demo.entity.Resources;
+import com.example.demo.service.Project_columnsService;
 import com.example.demo.service.ResourceDetailsService;
 import com.example.demo.service.ResourceService;
 import com.example.demo.service.UserService;
@@ -9,11 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
-/*@RequestMapping("/resource")*/
 public class ResourceController {
 
     @Autowired
     private ResourceService resourceService;
+
+    @Autowired
+    private Project_columnsService projectColumnsService;
 
     @Autowired
     private ResourceDetailsService resourceDetailsService;
@@ -21,17 +26,16 @@ public class ResourceController {
     @Autowired
     private UserService userService;
 
-    /*@GetMapping("/getResources/{resource_id}")
-    public ResponseEntity<?> getResourcesByID(Principal principal, @RequestParam(name = "resource_id") Integer resource_id) {
-        User currentUser = userService.get(principal);
-        Resources resources = resourceService.getResourceByid(resource_id);
-        if (resources == null) {
-            return new ResponseEntity<>("{The resource has not found}", HttpStatus.BAD_REQUEST);
+    @GetMapping("/getColumn/{column_id}")
+    public ResponseEntity<?> getColumn(@PathVariable Integer column_id) {
+        Project_columns projectColumns = projectColumnsService.getProject_columnsById(column_id);
+        if (projectColumns == null) {
+            return new ResponseEntity<>("The projectColumns is not found", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(resources, HttpStatus.OK);
+        return new ResponseEntity<>(projectColumns, HttpStatus.OK);
     }
-*/
-    @GetMapping("/get/{resourceId}")
+
+    @GetMapping("/getResource/{resourceId}")
     public ResponseEntity<?> getResource(@PathVariable Integer resourceId) {
         Resources resources = resourceService.getResourceByid(resourceId);
         if (resources == null) {
@@ -40,44 +44,73 @@ public class ResourceController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllResources")
     public ResponseEntity<?> getAllResources() {
         List<Resources> ResourceList = resourceService.getAllResources();
         return new ResponseEntity<>(ResourceList, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createColumns")
+    public ResponseEntity<?> createColumns(@RequestBody Project_columns projectColumns) {
+        Project_columns columns_new = projectColumnsService.addProject_columns(projectColumns);
+        return new ResponseEntity<>(projectColumns, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/createResources")
     public ResponseEntity<?> createResources(@RequestBody Resources resources) {
         Resources resources_new = resourceService.addResource(resources);
         return new ResponseEntity<>(resources, HttpStatus.CREATED);
     }
 
-    /*@DeleteMapping("/delete/{resource_id}")
-    public ResponseEntity<?> deleteResourcesByID(@RequestParam("resource_id") int resource_id) {
-        resourceService.deleteResourceByid(resource_id);
-        *//*Resources resources = resourceService.getResourceByid(resource_id);*//*
-        return new ResponseEntity<>(resources, HttpStatus.OK);
-    }
-}
-*/
-    /*@DeleteMapping("/delete/{resource_id}")
-    public ResponseEntity<?> deleteResourcesByID(@RequestParam("resource_id") int resource_id) {
-        Resources resources = resourceService.getResourceByid(resource_id);
-        resourceService.deleteResourceByid(resource_id);
-        return new ResponseEntity<>(resources, HttpStatus.OK);
-    }
-}
-*/
-/*
-    @DeleteMapping("/delete/{resource_id}")
-    public void deleteResourcesByID(@RequestParam("resource_id") int resource_id) {
-        resourceService.deleteResourceByid(resource_id);
-    }
-}*/
-    @DeleteMapping("/delete/{resourceId}")
-    public void delete(@PathVariable final int resourceId) {
-        resourceService.deleteResourceByid(resourceId);
+    @PostMapping("/updateColumn/{oldColumnName}/{columnName}")
+    public ResponseEntity<?> updateColumns(@PathVariable String oldColumnName, @PathVariable String columnName) {
+        Project_columns columnToUpdate = projectColumnsService.getProject_columnsByName(oldColumnName);
+        boolean isSuccessful = projectColumnsService.updateProject_columns(columnToUpdate, columnName);
+        if (isSuccessful) {
+            return new ResponseEntity<>(columnToUpdate, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("{\"error\":\"column does not exist!\"}", HttpStatus.BAD_REQUEST);
+
     }
 
-    //CRUD project_columns
+
+    @DeleteMapping("/deleteColumns/{column_id}")
+    public void deleteColumns(@PathVariable final int column_id) {
+        projectColumnsService.deleteColumnById(column_id);
+    }
+
+    @DeleteMapping("/deleteResource/{resourceId}")
+    public void deleteResource(@PathVariable final int resourceId) {
+        resourceService.deleteResourceByid(resourceId);
+    }
 }
+
+
+   /* @PostMapping("/setEntry")
+    public ResponseEntity<?> setEntry(@RequestParam(name = "resourceId") Integer resourceId, @RequestParam(name = "columnId") Integer columnId, @RequestParam(name = "value") String value) {
+        Project_columns column = projectColumnsService.getProject_columnsById(columnId);
+        if (column == null) {
+            return new ResponseEntity<>("{\"error\":\"column does not exist!\"}", HttpStatus.BAD_REQUEST);
+        }
+        Resources resource = resourceService.getResourceByid(resourceId);
+        if (resource == null) {
+            return new ResponseEntity<>("{\"error\":\"resource does not exist!\"}", HttpStatus.BAD_REQUEST);
+        }
+        Resource_Details resourceDetails = resourceDetailsService.get(resource,column);
+        if(resourceDetails == null){
+            resourceDetails = new ResourceDetails();
+            resourceDetails.setColumnValue(value);
+            resourceDetailsService.create(resourceDetails,resource,column);
+            return new ResponseEntity<>(resourceDetails, HttpStatus.OK);
+        }
+        resourceDetails.setColumnValue(value);
+        boolean isSuccessful = resourceDetailsService.update(resourceDetails);
+        if(isSuccessful){
+            return new ResponseEntity<>(resourceDetails,HttpStatus.OK);
+        }
+        return new ResponseEntity<>("{\"error\":\"sth wrong happens:(\"}",HttpStatus.BAD_REQUEST);
+    }
+}
+*/
+
+

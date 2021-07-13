@@ -67,16 +67,16 @@ public class Project_ResourceServiceImpl extends Throwable implements Project_Re
     }
 
     @Override
-    public void deleteResourceFromProject(Project project, Resources resources) {
-
-    }
-
-    @Override
     public void deleteResourcesFromProject(Resources resources, Project project){
         Integer projectId = project.getProjectId();
         Integer resourceId = resources.getResourceId();
         /*project_ResourceRepository.deleteByProjectIdAndResourceId(resourceId,projectId);*/
     }
+
+   /* @Override
+    public void updateResourcesFromProject(Resources resources, Project project) {
+
+    }*/
 
 
     @Override

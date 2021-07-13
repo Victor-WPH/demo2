@@ -14,9 +14,13 @@ public interface Project_ResourceService {
 
     boolean createProjectResources(Project_Resources projectResources, Project project, Resources resources);
 
-    Project_Resources addResourcesToProject(Project_Resources Project_Resources, Project project, Resources resource);
+    /*Project_Resources addResourcesToProject(Project_Resources Project_Resources, Project project, Resources resource);
 
     void deleteResourceFromProject (Project project, Resources resources);
+
+    void deleteResourcesFromProject(Resources resources, Project project);*/
+
+    Project_Resources addResourcesToProject(Project_Resources projectResources, Project project, Resources resource);
 
     void deleteResourcesFromProject(Resources resources, Project project);
 

@@ -35,5 +35,32 @@ public class Project_columnsServiceImpl extends Throwable implements Project_col
     public Project_columns getProject_columnsById(int column_id) {
         return project_columnsRepository.findById(column_id).orElse(null);
     }
+
+    @Override
+    public Project_columns getProject_columnsByName(String columnName) {
+        return project_columnsRepository.findByColumnName(columnName);
+    }
+
+    @Override
+    public boolean updateProject_columns(Project_columns projectColumns, String newColumnName) {
+        if (projectColumns == null) return false;
+        projectColumns.setColumnName(newColumnName);
+        return true;
+    }
+
+    @Override
+    public void deleteColumnById(int column_id) {
+        project_columnsRepository.deleteById(column_id);
+        System.out.println(column_id + "is deleted");
+    }
+
+
+
+    /*@Override
+    public void deleteProjectById(int project_id) {
+        projectRepository.deleteById(project_id);
+        System.out.println(project_id + "is deleted");
+
+    }*/
 }
 

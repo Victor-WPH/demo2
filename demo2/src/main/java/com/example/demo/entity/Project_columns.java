@@ -12,7 +12,7 @@ public class Project_columns {
     private int projectId;
 
     @Column
-    private String column_name;
+    private String columnName;
 
     @Enumerated
     @Column
@@ -45,12 +45,12 @@ public class Project_columns {
         this.project_columns = project_columns;
     }
 
-    public String getColumn_name() {
-        return column_name;
+    public String getColumnName() {
+        return columnName;
     }
 
-    public void setColumn_name(String column_name) {
-        this.column_name = column_name;
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
     public ColumnType getType() {

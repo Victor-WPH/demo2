@@ -40,7 +40,7 @@ public class Project_columnsServiceImplTest {
         Project_columns projectColumns = new Project_columns();
         projectColumns.setProjectId(2);
         projectColumns.setColumn_id(3);
-        projectColumns.setColumn_name("column1");
+        projectColumns.setColumnName("column1");
         projectColumns.setType(FORMULA);
         Project_columns test = project_columnsService.addProject_columns(projectColumns);
         Assert.assertNotEquals(null, test);

@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface Project_columnsRepository extends JpaRepository<Project_columns, Integer> {
 
+    Project_columns findByColumnName(String columnName);
 }
